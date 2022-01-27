@@ -2,40 +2,34 @@ import React, { Component } from 'react';
 import NewsItem from './NewsItem';
 
 export default class News extends Component {
-  articles =   [ {
-    "source": {
-    "id": "politico",
-    "name": "Politico"
-    },
-    "author": null,
-    "title": "Oath Keepers founder is ordered detained pending trial in Jan. 6 riot - POLITICO - POLITICO",
-    "description": "A federal magistrate judge in Texas says Stewart Rhodes poses a danger to the public.",
-    "url": "https://www.politico.com/news/2022/01/26/oath-keepers-founder-detained-jan-6-riot-00002603",
-    "urlToImage": null,
-    "publishedAt": "2022-01-27T00:45:39Z",
-    "content": "In an important acknowledgement of Rhodes significance to another investigation the Jan. 6 select committees probe of the attack on the Capitol Johnson emphasized that Rhodes would be permitted to te… [+4465 chars]"
-    }];
-    
+ 
   constructor(){
     super();
     this.state ={
-      articles: this.articles,
-      loading:false
+      articles: []
     }
   }
+
+  async componentDidMount(){
+    let url ="https://newsapi.org/v2/top-headlines?country=in&apiKey=5bc5913fdccc4770b3e5d63ff89baa08"
+    let data = await fetch(url);
+    let parsedData = await data.json();
+    console.log(parsedData);
+    this.setState({
+      articles: parsedData.articles
+    })
+  }
+
   render() {
     return (
-    <div className='="container'>
-      <div className ="row">
-        <div className = "col-md-4">
-        <NewsItem title="title" description="description" imageUrl ="imageUrl" newsUrl="newsUrl"/>
-        </div>
-        <div className = "col-md-4">
-        <NewsItem title="title" description="description" imageUrl ="imageUrl" newsUrl="newsUrl"/>
-        </div>
-        <div className = "col-md-4">
-        <NewsItem title="title" description="description" imageUrl ="imageUrl" newsUrl="newsUrl"/>
-        </div>
+    <div className="container">
+      <h1 className="text-center ">Top Headlines</h1>
+      <div className ="row my-4">
+        {this.state.articles.map((element) =>{
+          return (<div className = "col-md-4" key = {element.url}>
+            <NewsItem title={element.title} description={element.description} imageUrl ={element.urlToImage} newsUrl={element.url}/>
+          </div>);
+        })}
       </div>
     </div>
     );
