@@ -25,16 +25,19 @@ export default class News extends Component {
   }
    
   loadNews = async() =>{
+    //this.props.setProgress(10);
     this.setState({
       loading:true
     })
     let url = `https://newsapi.org/v2/top-headlines?country=in&page=${this.state.page}&pageSize=${this.props.pageSize}&category=${this.props.category}&apiKey=5bc5913fdccc4770b3e5d63ff89baa08`
     let data = await fetch(url);
+    //this.props.setProgress(40);
     let parsedData = await data.json();
     this.setState({
       articles: parsedData.articles,
       loading:false
     })
+   // this.props.setProgress(100);
     console.log(parsedData)
   }
 
@@ -53,7 +56,7 @@ export default class News extends Component {
       articles: this.state.articles.concat(parsedData.articles)
     })
   }
-xxxxx
+
   render() {
     return (
       <>
